@@ -7,15 +7,19 @@
             <th>Name</th>
             <th>Unit Price</th>
             <th>Quantity</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <ng-template ngFor let-product [ngForOf]="lstProducts">
-        <tr>
-            <td><a [routerLink]="['/products', product.Id]">{{ product.Name }}</a></td>
-            <td>{{ product.UnitPrice }}</td>
-            <td>{{ product.Quantity }}</td>
-        </tr>
+            <tr>
+                <td><a [routerLink]="['/products', product.Id]">{{ product.Name }}</a></td>
+                <td>{{ product.UnitPrice }}</td>
+                <td>{{ product.Quantity }}</td>
+                <td>
+                    <button type="button" (click)="onDeleteButtonClick(product.Id)">Delete</button>
+                </td>
+            </tr>
         </ng-template>
     </tbody>
 </table>

@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
-import { ImsApiService } from '../../../services';
 import { Subscription } from 'rxjs';
 import { IProduct } from 'src/app/models/product';
+import { ImsApiService } from 'src/app/services';
 
 @Component({
   selector: 'app-product-list',
@@ -31,6 +31,13 @@ export class ProductListComponent implements AfterViewInit, OnDestroy {
       this.isFetchingProducts = false;
 
       console.log(this.lstProducts);
+    });
+  }
+
+  onDeleteButtonClick(id: string)
+  {
+    this.srvIMSAPI.deleteProduct(id).subscribe(() => {
+      this.refreshProductList();
     });
   }
 

@@ -13,7 +13,15 @@ export class ImsApiService {
     private http: HttpClient
   ) { }
 
-  getProducts() : Observable<IProduct[]> {
+  getProduct(id: string) {
+    return this.http.get<IProduct>(`${this.baseUrl}/products/${id}`);
+  }
+
+  getProducts(): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(`${this.baseUrl}/products`);
+  }
+
+  deleteProduct(id: string) {
+    return this.http.delete(`${this.baseUrl}/products/${id}`);
   }
 }
