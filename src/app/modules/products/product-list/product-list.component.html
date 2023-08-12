@@ -1,0 +1,21 @@
+<h1>Products</h1>
+
+<p *ngIf="isFetchingProducts">Loading products</p>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-template ngFor let-product [ngForOf]="lstProducts">
+        <tr>
+            <td><a [routerLink]="['/products', product.Id]">{{ product.Name }}</a></td>
+            <td>{{ product.UnitPrice }}</td>
+            <td>{{ product.Quantity }}</td>
+        </tr>
+        </ng-template>
+    </tbody>
+</table>
