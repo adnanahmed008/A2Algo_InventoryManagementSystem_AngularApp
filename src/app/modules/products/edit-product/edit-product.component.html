@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-5">
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Update Product</h2>
+            </div>
+
+            <div class="card-body">
+
+                <form [formGroup]="frmUpdateProduct" (ngSubmit)="onUpdateProductFormSubmit()"
+                    [ngClass]="{ 'pe-none': isUpdatingProduct || isLoadingProduct }">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name <sup class="aesterik-required">*</sup></label>
+                        <input type="text" class="form-control" formControlName="name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="description">Description <sup
+                                class="aesterik-required">*</sup></label>
+                        <textarea class="form-control" formControlName="description"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="unitPrice">Unit Price <sup
+                                class="aesterik-required">*</sup></label>
+                        <input type="text" class="form-control" formControlName="unitPrice" />
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group d-flex align-items-center">
+                        <a routerLink="/products" class="btn btn-secondary me-1">Cancel</a>
+
+                        <button [disabled]="isUpdatingProduct || isLoadingProduct" type="submit" class="btn btn-primary me-1">Update</button>
+                        <div *ngIf="isUpdatingProduct" class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,25 +1,48 @@
-<h1>Products</h1>
+<div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Products</h1>
+        </div>
 
-<p *ngIf="isFetchingProducts">Loading products</p>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Unit Price</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <ng-template ngFor let-product [ngForOf]="lstProducts">
-            <tr>
-                <td><a [routerLink]="['/products', product.Id]">{{ product.Name }}</a></td>
-                <td>{{ product.UnitPrice }}</td>
-                <td>{{ product.Quantity }}</td>
-                <td>
-                    <button type="button" (click)="onDeleteButtonClick(product.Id)">Delete</button>
-                </td>
-            </tr>
-        </ng-template>
-    </tbody>
-</table>
+        <a [routerLink]="['/products/create']" class="btn btn-dark">Create Product</a>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-12">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="isFetchingProducts">
+                    <td colspan="100%">Loading records</td>
+                </tr>
+
+                <tr *ngIf="!isFetchingProducts && !lstProducts.length">
+                    <td colspan="100%">No records found</td>
+                </tr>
+
+                <ng-template ngFor let-product [ngForOf]="lstProducts">
+                    <tr>
+                        <td><a [routerLink]="['/products', product.Id]">{{ product.Name }}</a></td>
+                        <td>{{ product.UnitPrice }}</td>
+                        <td>{{ product.Quantity }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-secondary me-1" [routerLink]="['/products/edit', product.Id]">Edit</a>
+                            <button type="button" class="btn btn-sm btn-outline-secondary me-1" (click)="onDeleteButtonClick(product.Id)">Delete</button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+</div>

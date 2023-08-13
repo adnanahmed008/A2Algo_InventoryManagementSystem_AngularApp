@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { IProduct } from 'src/app/models/product';
+import { IProduct } from 'src/app/interfaces';
 import { ImsApiService } from 'src/app/services';
 
 @Component({
@@ -9,14 +9,19 @@ import { ImsApiService } from 'src/app/services';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent implements OnInit, AfterViewInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   private $SubscriberProductDetail: Subscription = new Subscription;
-  private id!: string;
 
+  // #region | Product Info |
+  private productId!: string;
   public product!: IProduct;
+  // #endregion
+
+  public isLoadingProduct: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private srvIMSAPI: ImsApiService
   ) {
 
@@ -24,17 +29,29 @@ export class ProductDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((value: ParamMap) => {
-      this.id = value.get("id") as string;
+      this.productId = value.get("id") as string;
       this.getProductDetail();
     });
   }
 
-  ngAfterViewInit(): void {
+  getProductDetail() {
+    this.isLoadingProduct = true;
+    this.$SubscriberProductDetail = this.srvIMSAPI.getProduct(this.productId).subscribe({
+      next: product => {
+        if(!product)
+        this.router.navigate([".."]);
+
+        this.product = product;
+        this.isLoadingProduct = false;
+      },
+      error: error => {
+        this.isLoadingProduct = false;
+      }
+    });
   }
 
-  getProductDetail() {
-    this.$SubscriberProductDetail = this.srvIMSAPI.getProduct(this.id).subscribe(product => {
-      this.product = product;
-    });
+  ngOnDestroy(): void {
+    if (this.$SubscriberProductDetail)
+      this.$SubscriberProductDetail.unsubscribe();
   }
 }

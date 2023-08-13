@@ -1,6 +1,6 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { IProduct } from 'src/app/models/product';
+import { IProduct } from 'src/app/interfaces/product';
 import { ImsApiService } from 'src/app/services';
 
 @Component({
@@ -8,8 +8,9 @@ import { ImsApiService } from 'src/app/services';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements AfterViewInit, OnDestroy {
+export class ProductListComponent implements OnInit, OnDestroy {
   private $SubscriberGetProducts: Subscription = new Subscription;
+  private $SubscriberDeleteProducts: Subscription = new Subscription;
 
   public lstProducts: IProduct[] = [];
   public isFetchingProducts: boolean = true;
@@ -20,23 +21,25 @@ export class ProductListComponent implements AfterViewInit, OnDestroy {
 
   }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.refreshProductList();
   }
 
   refreshProductList() {
     this.isFetchingProducts = true;
-    this.$SubscriberGetProducts = this.srvIMSAPI.getProducts().subscribe(products => {
-      this.lstProducts = products;
-      this.isFetchingProducts = false;
-
-      console.log(this.lstProducts);
+    this.$SubscriberGetProducts = this.srvIMSAPI.getProducts().subscribe({
+      next: (products: IProduct[]) => {
+        this.lstProducts = products;
+        this.isFetchingProducts = false;
+      },
+      error: error => {
+        this.isFetchingProducts = false;
+      }
     });
   }
 
-  onDeleteButtonClick(id: string)
-  {
-    this.srvIMSAPI.deleteProduct(id).subscribe(() => {
+  onDeleteButtonClick(id: string) {
+    this.$SubscriberDeleteProducts = this.srvIMSAPI.deleteProduct(id).subscribe(() => {
       this.refreshProductList();
     });
   }
@@ -44,5 +47,8 @@ export class ProductListComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.$SubscriberGetProducts)
       this.$SubscriberGetProducts.unsubscribe();
+
+    if (this.$SubscriberDeleteProducts)
+      this.$SubscriberDeleteProducts.unsubscribe();
   }
 }
