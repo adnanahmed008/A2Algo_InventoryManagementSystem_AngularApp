@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@import url(../node_modules/bootstrap/dist/css/bootstrap.css);
+@import url(../node_modules/sweetalert2/dist/sweetalert2.css);
+
+// #region | Common |
+.aesterik-required {
+    color: var(--bs-red);
+}
+// #endregion
+
+// #region | Form Controls |
+.form-control.ng-invalid.ng-touched {
+    border-color: var(--bs-red);
+}
+// #endregion
