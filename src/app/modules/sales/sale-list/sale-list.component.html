@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Sales</h1>
+        </div>
+
+        <a [routerLink]="['/sales/create-order']" class="btn btn-dark">Sell Product</a>
+    </div>
+</div>
+
+<hr />
+
+<div class="row">
+    <div class="col-12">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity Sold</th>
+                    <th>Unit Price</th>
+                    <th>Total Amount</th>
+                    <th>Dated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="isFetchingSales">
+                    <td colspan="100%">Loading records</td>
+                </tr>
+
+                <tr *ngIf="!isFetchingSales && !lstSales.length">
+                    <td colspan="100%">No records found</td>
+                </tr>
+
+                <ng-template ngFor let-purchase [ngForOf]="lstSales">
+                    <tr>
+                        <td><a [routerLink]="['/products', purchase.ProductId]">{{ purchase.ProductName }}</a></td>
+                        <td>{{ purchase.QuantitySold }}</td>
+                        <td>{{ purchase.ProductUnitPrice }}</td>
+                        <td>{{ purchase.TotalAmount }}</td>
+                        <td>{{ purchase.Dated }}</td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+</div>
