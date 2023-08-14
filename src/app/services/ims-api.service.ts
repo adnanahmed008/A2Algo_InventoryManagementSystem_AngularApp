@@ -12,7 +12,7 @@ import { IPurchaseOrder } from '../interfaces/purchase-order';
   providedIn: 'root'
 })
 export class ImsApiService {
-  private baseUrl: string = `http://192.168.10.25:8000/api`;
+  private baseUrl: string = `http://localhost:5168/api`;
   private timeout: number = 2000;
 
   constructor(
